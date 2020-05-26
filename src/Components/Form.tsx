@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Entry, getMinutesRoundedDown5, padMinutes } from "../lib";
+import {
+  Entry,
+  generateStartTime,
+  parseTimeField,
+  createStartTime,
+  startTimeValue
+} from "../lib";
 import { connect } from "react-redux";
 import { actions } from "../ducks/entries";
 import { nanoid } from "nanoid";
-
-const generateStartTime = () => {
-  const now = new Date();
-  const startTime = now.setMinutes(getMinutesRoundedDown5(now), 0);
-  return new Date(startTime);
-};
-
-const createStartTime = (hours: number, minutes: number) => {
-  const now = new Date();
-  const startTime = now.setHours(hours, minutes, 0);
-  return new Date(startTime);
-};
-
-const parseTimeField = (value: string) => {
-  console.log("value:", value);
-  return value.split(":").map((x) => parseInt(x));
-};
 
 const Form = (props: { entryAdded: any }) => {
   const [startTime, setStartTime] = useState<Date>(generateStartTime());
@@ -29,11 +18,11 @@ const Form = (props: { entryAdded: any }) => {
   const [entries, setEntries] = useState<Entry[]>([]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {      
+    const timeout = setTimeout(() => {
       setStartTime(generateStartTime());
     }, 60000);
 
-    return function cleanup() {      
+    return function cleanup() {
       clearTimeout(timeout);
     };
   });
@@ -62,9 +51,7 @@ const Form = (props: { entryAdded: any }) => {
       >
         <label>Enter start time:</label>
         <input
-          value={
-            startTime.getHours() + ":" + padMinutes(startTime.getMinutes())
-          }
+          value={startTimeValue(startTime)}
           onChange={(e) => {
             const [hours, minutes] = parseTimeField(e.target.value);
             setStartTime(createStartTime(hours, minutes));
