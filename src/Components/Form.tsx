@@ -5,21 +5,21 @@ import { actions } from "../ducks/entries";
 import { nanoid } from "nanoid";
 
 const generateStartTime = () => {
-  const now = new Date()
+  const now = new Date();
   const startTime = now.setMinutes(getMinutesRoundedDown5(now), 0);
   return new Date(startTime);
 };
 
 const createStartTime = (hours: number, minutes: number) => {
-  const now = new Date()
-  const startTime = now.setHours(hours, minutes, 0)
+  const now = new Date();
+  const startTime = now.setHours(hours, minutes, 0);
   return new Date(startTime);
-}
+};
 
 const parseTimeField = (value: string) => {
-  console.log('value:', value)
-  return value.split(':').map(x => parseInt(x))
-}
+  console.log("value:", value);
+  return value.split(":").map((x) => parseInt(x));
+};
 
 const Form = (props: { entryAdded: any }) => {
   const [startTime, setStartTime] = useState<Date>(generateStartTime());
@@ -28,9 +28,15 @@ const Form = (props: { entryAdded: any }) => {
 
   const [entries, setEntries] = useState<Entry[]>([]);
 
-  setTimeout(() => {
-    setStartTime(generateStartTime());
-  }, 60000);
+  useEffect(() => {
+    const timeout = setTimeout(() => {      
+      setStartTime(generateStartTime());
+    }, 60000);
+
+    return function cleanup() {      
+      clearTimeout(timeout);
+    };
+  });
 
   return (
     <>
@@ -38,7 +44,7 @@ const Form = (props: { entryAdded: any }) => {
         onSubmit={(e) => {
           e.preventDefault();
 
-          const now = new Date()
+          const now = new Date();
 
           const newEntry = {
             id: nanoid(),
@@ -56,10 +62,12 @@ const Form = (props: { entryAdded: any }) => {
       >
         <label>Enter start time:</label>
         <input
-          value={startTime.getHours() + ':' + padMinutes(startTime.getMinutes())}
+          value={
+            startTime.getHours() + ":" + padMinutes(startTime.getMinutes())
+          }
           onChange={(e) => {
-            const [hours, minutes] = parseTimeField(e.target.value)
-            setStartTime(createStartTime(hours, minutes))
+            const [hours, minutes] = parseTimeField(e.target.value);
+            setStartTime(createStartTime(hours, minutes));
           }}
           step="300"
           type="time"
