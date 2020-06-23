@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { RootState } from "../configureStore";
-import { Entry, displayStartTime } from "../lib";
+import { Entry, displayStartDate } from "../lib";
 import { selectors, actions } from "../ducks/entries";
 
 const List = (props: { entries: Entry[], entryRemoved: any }) => {
@@ -11,9 +11,9 @@ const List = (props: { entries: Entry[], entryRemoved: any }) => {
       {props.entries.map((entry) => {
         return (
           <div key={entry.id}>
-            <h2>
-              {displayStartTime(entry.startTime) + " " + entry.details}
-            </h2>
+            <span>
+              {displayStartDate(entry.startDate) + " " + entry.details}
+            </span>
             <button onClick={() => props.entryRemoved(entry.id)}>X</button>
           </div>
         );

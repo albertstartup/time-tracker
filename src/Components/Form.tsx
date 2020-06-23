@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Entry,
-  generateStartTime,
+  generateStartDate,
   parseTimeField,
   createStartTime,
   startTimeValue
@@ -11,7 +11,7 @@ import { actions } from "../ducks/entries";
 import { nanoid } from "nanoid";
 
 const Form = (props: { entryAdded: any }) => {
-  const [startTime, setStartTime] = useState<Date>(generateStartTime());
+  const [startTime, setStartTime] = useState<Date>(generateStartDate());
   const [duration, setDuration] = useState(10);
   const [details, setDetails] = useState("");
 
@@ -19,7 +19,7 @@ const Form = (props: { entryAdded: any }) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setStartTime(generateStartTime());
+      setStartTime(generateStartDate());
     }, 60000);
 
     return function cleanup() {
@@ -38,7 +38,7 @@ const Form = (props: { entryAdded: any }) => {
           const newEntry = {
             id: nanoid(),
             created: JSON.stringify(now),
-            startTime: JSON.stringify(startTime),
+            startDate: JSON.stringify(startTime),
             duration,
             details,
           };
