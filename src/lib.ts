@@ -1,10 +1,28 @@
+import { nanoid } from "nanoid";
+
 export interface Entry {
   id: string;
   createdAt: string;
   startDate: string;
-  duration: Number;
+  duration: number;
   details: string;
 }
+
+export const generateEntry = (
+  startDate: string,
+  duration: number,
+  details: string
+) => {
+  const now = new Date();
+
+  return {
+    id: nanoid(),
+    createdAt: JSON.stringify(now),
+    startDate: startDate,
+    duration,
+    details,
+  };
+};
 
 export const getMinutesRoundedDown5 = (date: Date): number => {
   const minutes = date.getMinutes();
@@ -30,7 +48,9 @@ export const displayStartDate = (startDate: string) => {
 
 /** Convert startDate to a string that can be passed as a value to an input element */
 export const startDateToInputValue = (startDate: string) =>
-  padNumber(parseJSONDate(startDate).getHours()) + ":" + padNumber(parseJSONDate(startDate).getMinutes());
+  padNumber(parseJSONDate(startDate).getHours()) +
+  ":" +
+  padNumber(parseJSONDate(startDate).getMinutes());
 
 export const generateStartDate = () => {
   const now = new Date();
