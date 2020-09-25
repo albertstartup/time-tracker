@@ -3,7 +3,8 @@ import {
   generateStartDate,
   parseTimeField,
   createStartDate,
-  startDateToInputValue, generateEntry
+  startDateToInputValue,
+  generateEntry
 } from "../lib";
 import { connect } from "react-redux";
 import { actions } from "../ducks/entries";
@@ -16,7 +17,7 @@ const Form = (props: { entryAdded: any }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setStartDate(generateStartDate());
-    }, 60000);
+    }, 10000);
 
     return function cleanup() {
       clearTimeout(timeout);
