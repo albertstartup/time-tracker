@@ -10,7 +10,8 @@ const entriesSlice = createSlice({
   initialState: entriesAdapter.getInitialState(),
   reducers: {
     entryAdded: entriesAdapter.addOne,
-    entryRemoved: entriesAdapter.removeOne
+    entryRemoved: entriesAdapter.removeOne,
+    entryUpdated: entriesAdapter.updateOne
   }
 });
 

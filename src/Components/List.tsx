@@ -1,22 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { RootState } from "../configureStore";
 import { Entry, displayStartDate } from "../lib";
 import { selectors, actions } from "../ducks/entries";
+import Edit from "./Edit";
 
-const List = (props: { entries: Entry[], entryRemoved: any }) => {
+const List = (props: {
+  entries: Entry[];
+  entryRemoved: any;
+}) => {
+  const [editingEntryId, setEditingEntryId] = useState("");
+
   return (
     <>
       <h1>Entries: </h1>
       {props.entries.map((entry) => {
-        return (
-          <div key={entry.id}>
-            <span>
+        if (editingEntryId === entry.id) {
+          return (
+            <Edit              
+              entry={entry}
+              setEditingEntryId={setEditingEntryId}
+              key={entry.id}
+            />
+          );
+        } else {
+          return (
+            <div key={entry.id}>
               {displayStartDate(entry.startDate) + " " + entry.details}
-            </span>
-            <button onClick={() => props.entryRemoved(entry.id)}>X</button>
-          </div>
-        );
+
+              <button onClick={() => props.entryRemoved(entry.id)}>X</button>
+              <button onClick={() => setEditingEntryId(entry.id)}>Edit</button>
+            </div>
+          );
+        }
       })}
     </>
   );
@@ -27,7 +43,7 @@ const mapState = (state: RootState) => {
 };
 
 const mapDispatch = {
-  entryRemoved: actions.entryRemoved
-}
+  entryRemoved: actions.entryRemoved,
+};
 
 export default connect(mapState, mapDispatch)(List);
