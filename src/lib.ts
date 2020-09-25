@@ -1,6 +1,6 @@
 export interface Entry {
   id: string;
-  created: string;
+  createdAt: string;
   startDate: string;
   duration: Number;
   details: string;
@@ -28,19 +28,20 @@ export const displayStartDate = (startDate: string) => {
   return displayHours + ":" + padNumber(minutes);
 };
 
-export const startTimeValue = (startTime: Date) =>
-  padNumber(startTime.getHours()) + ":" + padNumber(startTime.getMinutes());
+/** Convert startDate to a string that can be passed as a value to an input element */
+export const startDateToInputValue = (startDate: string) =>
+  padNumber(parseJSONDate(startDate).getHours()) + ":" + padNumber(parseJSONDate(startDate).getMinutes());
 
 export const generateStartDate = () => {
   const now = new Date();
-  const startTime = now.setMinutes(getMinutesRoundedDown5(now), 0);
-  return new Date(startTime);
+  const startDate = now.setMinutes(getMinutesRoundedDown5(now), 0);
+  return JSON.stringify(new Date(startDate));
 };
 
-export const createStartTime = (hours: number, minutes: number) => {
+export const createStartDate = (hours: number, minutes: number) => {
   const now = new Date();
-  const startTime = now.setHours(hours, minutes, 0);
-  return new Date(startTime);
+  const startDate = now.setHours(hours, minutes, 0);
+  return JSON.stringify(new Date(startDate));
 };
 
 export const parseTimeField = (value: string) => {

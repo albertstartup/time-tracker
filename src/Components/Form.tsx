@@ -3,15 +3,15 @@ import {
   Entry,
   generateStartDate,
   parseTimeField,
-  createStartTime,
-  startTimeValue
+  createStartDate,
+  startDateToInputValue
 } from "../lib";
 import { connect } from "react-redux";
 import { actions } from "../ducks/entries";
 import { nanoid } from "nanoid";
 
 const Form = (props: { entryAdded: any }) => {
-  const [startTime, setStartTime] = useState<Date>(generateStartDate());
+  const [startDate, setStartDate] = useState(generateStartDate());
   const [duration, setDuration] = useState(10);
   const [details, setDetails] = useState("");
 
@@ -19,7 +19,7 @@ const Form = (props: { entryAdded: any }) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setStartTime(generateStartDate());
+      setStartDate(generateStartDate());
     }, 60000);
 
     return function cleanup() {
@@ -37,8 +37,8 @@ const Form = (props: { entryAdded: any }) => {
 
           const newEntry = {
             id: nanoid(),
-            created: JSON.stringify(now),
-            startDate: JSON.stringify(startTime),
+            createdAt: JSON.stringify(now),
+            startDate: JSON.stringify(startDate),
             duration,
             details,
           };
@@ -51,15 +51,16 @@ const Form = (props: { entryAdded: any }) => {
       >
         <label>Enter start time:</label>
         <input
-          value={startTimeValue(startTime)}
+          value={startDateToInputValue(startDate)}
           onChange={(e) => {
             const [hours, minutes] = parseTimeField(e.target.value);
-            setStartTime(createStartTime(hours, minutes));
+            setStartDate(createStartDate(hours, minutes));
           }}
           step="300"
           type="time"
         />
         <br />
+
         <label>Enter duration:</label>
         <input
           onChange={(e) => setDuration(parseInt(e.target.value))}
@@ -68,14 +69,16 @@ const Form = (props: { entryAdded: any }) => {
           type="number"
         />
         <br />
+
         <label>Enter detail:</label>
         <input
           onChange={(e) => setDetails(e.target.value)}
           value={details}
-          type="entry"
+          type="text"
           required
         />
         <br />
+
         <button type="submit">Save</button>
       </form>
     </>
