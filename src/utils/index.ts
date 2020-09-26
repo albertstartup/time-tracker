@@ -1,29 +1,3 @@
-import { nanoid } from "nanoid";
-
-export interface Entry {
-  id: string;
-  createdAt: string;
-  startDate: string;
-  duration: number;
-  details: string;
-}
-
-export const generateEntry = (
-  startDate: string,
-  duration: number,
-  details: string
-) => {
-  const now = new Date();
-
-  return {
-    id: nanoid(),
-    createdAt: JSON.stringify(now),
-    startDate: startDate,
-    duration,
-    details,
-  };
-};
-
 /** Gets the last minute that is a multiple of 5 or 0.
  * This function is used to generate startDate of a time entry.
  * @example
