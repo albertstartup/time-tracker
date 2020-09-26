@@ -24,6 +24,11 @@
     "styled-components": "^5.1.1",
     "typescript": "~3.7.2"
   },
+  "resolutions": {
+    "@typescript-eslint/eslint-plugin": "2.23.0",
+    "@typescript-eslint/parser": "2.23.0",
+    "@typescript-eslint/typescript-estree": "2.23.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
