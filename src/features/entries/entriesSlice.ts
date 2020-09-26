@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
-import { Entry, compareDates } from "../lib";
+import { Entry, compareDates } from "utils";
 
 const entriesAdapter = createEntityAdapter<Entry>({
   sortComparer: (a, b) => -compareDates(a.createdAt, b.createdAt)
