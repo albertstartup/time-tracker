@@ -1,6 +1,6 @@
 import React from "react";
-import Form from "./Form";
-import List from "./List";
+import Form from "components/Form"
+import List from "components/List";
 import styled from 'styled-components'
 
 const AppWrapper = styled.div`

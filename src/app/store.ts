@@ -1,6 +1,6 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit"
 import { combineReducers } from 'redux'
-import entriesReducer from './ducks/entries'
+import entriesReducer from 'features/entries/entries'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
