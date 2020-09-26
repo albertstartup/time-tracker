@@ -5,14 +5,16 @@ import {
   createStartDate,
   startDateToInputValue,
 } from "utils";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actions } from "features/entries/entriesSlice";
 import { generateEntry } from "features/entries/utils";
 
-const Form = (props: { entryAdded: any }) => {
+const Form = () => {
   const [startDate, setStartDate] = useState(generateStartDate());
   const [duration, setDuration] = useState(10);
   const [details, setDetails] = useState("");
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -27,7 +29,7 @@ const Form = (props: { entryAdded: any }) => {
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     const newEntry = generateEntry(startDate, duration, details);
-    props.entryAdded(newEntry);
+    dispatch(actions.addEntry(newEntry));
   };
 
   return (
@@ -69,8 +71,4 @@ const Form = (props: { entryAdded: any }) => {
   );
 };
 
-const mapDispatch = {
-  entryAdded: actions.entryAdded,
-};
-
-export default connect(null, mapDispatch)(Form);
+export default Form;

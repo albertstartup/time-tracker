@@ -1,18 +1,26 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/rootReducer";
-import { displayStartDate } from "utils";
+import { displayStartDate, startDateIsToday } from "utils";
 import { selectors, actions } from "features/entries/entriesSlice";
 import Edit from "./Edit";
-import { Entry } from "features/entries/utils";
+import { createSelector } from "@reduxjs/toolkit";
 
-const List = (props: { entries: Entry[]; entryRemoved: any }) => {
+const allEntriesSelector = createSelector(
+  (state: RootState) => state.entries,
+  selectors.selectAll
+);
+
+const List = () => {
   const [editingEntryId, setEditingEntryId] = useState("");
+
+  const dispatch = useDispatch();
+  const entries = useSelector(allEntriesSelector);
 
   return (
     <>
       <h1>Entries: </h1>
-      {props.entries.map((entry) => {
+      {entries.map((entry) => {
         if (editingEntryId === entry.id) {
           return (
             <Edit
@@ -26,7 +34,9 @@ const List = (props: { entries: Entry[]; entryRemoved: any }) => {
             <div key={entry.id}>
               {displayStartDate(entry.startDate) + " " + entry.details}
 
-              <button onClick={() => props.entryRemoved(entry.id)}>X</button>
+              <button onClick={() => dispatch(actions.removeEntry(entry.id))}>
+                X
+              </button>
               <button onClick={() => setEditingEntryId(entry.id)}>Edit</button>
             </div>
           );
@@ -36,12 +46,4 @@ const List = (props: { entries: Entry[]; entryRemoved: any }) => {
   );
 };
 
-const mapState = (state: RootState) => {
-  return { entries: selectors.selectAll(state.entries) };
-};
-
-const mapDispatch = {
-  entryRemoved: actions.entryRemoved,
-};
-
-export default connect(mapState, mapDispatch)(List);
+export default List;

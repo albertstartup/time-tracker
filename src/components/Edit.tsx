@@ -1,5 +1,4 @@
 import React, { FormEvent, useState } from "react";
-import { connect } from "react-redux";
 import { actions } from "features/entries/entriesSlice";
 import {
   createStartDate,
@@ -7,11 +6,11 @@ import {
   startDateToInputValue,
 } from "utils";
 import { Entry } from "features/entries/utils";
+import { useDispatch } from "react-redux";
 
 interface EditProps {
   entry: Entry;
   setEditingEntryId: (id: string) => void;
-  entryUpdated: any;
 }
 
 const Edit = (props: EditProps) => {
@@ -19,13 +18,15 @@ const Edit = (props: EditProps) => {
   const [duration, setDuration] = useState(props.entry.duration);
   const [details, setDetails] = useState(props.entry.details);
 
+  const dispatch = useDispatch();
+
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    props.entryUpdated({
+    dispatch(actions.updateEntry({
       id: props.entry.id,
       changes: { startDate, duration, details },
-    });
+    }));
     props.setEditingEntryId("");
   };
 
@@ -60,8 +61,4 @@ const Edit = (props: EditProps) => {
   );
 };
 
-const mapDispatch = {
-  entryUpdated: actions.entryUpdated,
-};
-
-export default connect(null, mapDispatch)(Edit);
+export default Edit;
