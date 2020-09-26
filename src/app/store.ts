@@ -1,12 +1,7 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit"
-import { combineReducers } from 'redux'
-import entriesReducer from 'features/entries/entries'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-
-const rootReducer = combineReducers({
-  entries: entriesReducer
-})
+import rootReducer from "./rootReducer"
 
 const persistConfig = {
   key: 'time-tracker-root',
@@ -22,6 +17,15 @@ export const store = configureStore({
   })
 })
 
-export type RootState = ReturnType<typeof store.getState>
-
 export const persistor = persistStore(store)
+
+if (process.env.NODE_ENV === "development" && module.hot) {
+  module.hot.accept("./rootReducer", () => {
+    const newRootReducer = require("./rootReducer").default;
+    store.replaceReducer(newRootReducer);
+  });
+}
+
+export type AppDispatch = typeof store.dispatch;
+
+export default store;
