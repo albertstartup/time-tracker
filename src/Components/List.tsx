@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { RootState } from "../configureStore";
-import { Entry, displayStartDate } from "../lib";
-import { selectors, actions } from "../ducks/entries";
+import { RootState } from "app/rootReducer";
+import { displayStartDate } from "utils";
+import { selectors, actions } from "features/entries/entriesSlice";
 import Edit from "./Edit";
+import { Entry } from "features/entries/utils";
 
-const List = (props: {
-  entries: Entry[];
-  entryRemoved: any;
-}) => {
+const List = (props: { entries: Entry[]; entryRemoved: any }) => {
   const [editingEntryId, setEditingEntryId] = useState("");
 
   return (
@@ -17,7 +15,7 @@ const List = (props: {
       {props.entries.map((entry) => {
         if (editingEntryId === entry.id) {
           return (
-            <Edit              
+            <Edit
               entry={entry}
               setEditingEntryId={setEditingEntryId}
               key={entry.id}

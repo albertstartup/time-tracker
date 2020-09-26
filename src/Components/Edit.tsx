@@ -1,12 +1,12 @@
 import React, { FormEvent, useState } from "react";
 import { connect } from "react-redux";
-import { actions } from "../ducks/entries";
+import { actions } from "features/entries/entriesSlice";
 import {
   createStartDate,
-  Entry,
   parseTimeField,
   startDateToInputValue,
-} from "../lib";
+} from "utils";
+import { Entry } from "features/entries/utils";
 
 interface EditProps {
   entry: Entry;

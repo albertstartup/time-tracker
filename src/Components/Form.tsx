@@ -4,10 +4,10 @@ import {
   parseTimeField,
   createStartDate,
   startDateToInputValue,
-  generateEntry
-} from "../lib";
+} from "utils";
 import { connect } from "react-redux";
-import { actions } from "../ducks/entries";
+import { actions } from "features/entries/entriesSlice";
+import { generateEntry } from "features/entries/utils";
 
 const Form = (props: { entryAdded: any }) => {
   const [startDate, setStartDate] = useState(generateStartDate());
