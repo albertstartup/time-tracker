@@ -78,3 +78,15 @@ export const parseTimeField = (value: string) => {
 
 export const compareDates = (a: string, b: string) =>
   parseJSONDate(a).getTime() - parseJSONDate(b).getTime();
+
+export const startDateIsToday = (startDate: string) => {
+  const date = parseJSONDate(startDate)
+  return isToday(date)
+}
+
+const isToday = (someDate: Date) => {
+  const today = new Date()
+  return someDate.getDate() === today.getDate() &&
+    someDate.getMonth() === today.getMonth() &&
+    someDate.getFullYear() === today.getFullYear()
+}
