@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from "react";
+import React, { useState, useEffect, FormEvent, useRef } from "react";
 import {
   generateStartDate,
   parseTimeField,
@@ -8,6 +8,7 @@ import {
 import { useDispatch } from "react-redux";
 import { actions } from "features/entries/entriesSlice";
 import { generateEntry } from "features/entries/utils";
+import { GlobalHotKeys } from "react-hotkeys";
 
 const Form = () => {
   const [startDate, setStartDate] = useState(generateStartDate());
@@ -15,6 +16,8 @@ const Form = () => {
   const [details, setDetails] = useState("");
 
   const dispatch = useDispatch();
+
+  const detailInputRef = useRef<null | HTMLInputElement>(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -32,8 +35,19 @@ const Form = () => {
     dispatch(actions.addEntry(newEntry));
   };
 
+  const keyMap = {
+    focusEntryDetailsInput: "ctrl+a",
+  };
+
+  const hotkeyHandlers = {
+    focusEntryDetailsInput: () => {      
+      detailInputRef.current && detailInputRef.current.focus();
+    },
+  };
+
   return (
     <>
+      <GlobalHotKeys keyMap={keyMap} handlers={hotkeyHandlers} />
       <form onSubmit={onSubmit}>
         <label>Enter start time:</label>
         <input
@@ -44,6 +58,7 @@ const Form = () => {
           }}
           step="300"
           type="time"
+          autoFocus
         />
         <br />
 
@@ -58,6 +73,7 @@ const Form = () => {
 
         <label>Enter detail:</label>
         <input
+          ref={detailInputRef}
           onChange={(e) => setDetails(e.target.value)}
           value={details}
           type="text"
